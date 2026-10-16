@@ -380,6 +380,41 @@
 	} while(0)
 
 /**
+  Removes a key/value entry from a dynamic map at a given index.
+
+  @note This macro expects a pointer to the dynamic map.
+
+  This macro is used for maps with string keys.
+
+  @see dynmaps_remove_at(dynamic_map, idx)
+*/
+#define dynmaps_remove_at_strkey(dynamic_map, idx) \
+	do { \
+		free(*((dynamic_map)->keys + (idx))); \
+		memmove((dynamic_map)->keys + (idx), (dynamic_map)->keys + (idx) + 1, ((dynamic_map)->size - (idx) - 1) * sizeof(*(dynamic_map)->keys)); \
+		memmove((dynamic_map)->values + (idx), (dynamic_map)->values + (idx) + 1, ((dynamic_map)->size - (idx) - 1) * sizeof(*(dynamic_map)->values)); \
+		(dynamic_map)->size--; \
+	} while(0)
+
+/**
+  Removes a key/value entry from a dynamic map at a given index.
+
+  @note This macro expects a pointer to the dynamic map.
+
+  This macro is used for maps with string keys and values.
+
+  @see dynmaps_remove_at_strkey(dynamic_map, idx)
+*/
+#define dynmaps_remove_at_strkeyval(dynamic_map, idx) \
+	do { \
+		free(*((dynamic_map)->keys + (idx))); \
+		free(*((dynamic_map)->values + (idx))); \
+		memmove((dynamic_map)->keys + (idx), (dynamic_map)->keys + (idx) + 1, ((dynamic_map)->size - (idx) - 1) * sizeof(*(dynamic_map)->keys)); \
+		memmove((dynamic_map)->values + (idx), (dynamic_map)->values + (idx) + 1, ((dynamic_map)->size - (idx) - 1) * sizeof(*(dynamic_map)->values)); \
+		(dynamic_map)->size--; \
+	} while(0)
+
+/**
   Determines the given map contains a specific key.
   For maps that use string keys, use dynmaps_find_entry_strkey(...)
   instead.
@@ -484,7 +519,7 @@
 		dynmaps_find_entry_strkey(dynamic_map, key, dynmaps_entry_idx); \
 		if(dynmaps_entry_idx != -1) \
 		{ \
-			dynmaps_remove_at(dynamic_map, dynmaps_entry_idx); \
+			dynmaps_remove_at_strkey(dynamic_map, dynmaps_entry_idx); \
 			(result) = 1; \
 		} \
 	} while(0)
@@ -493,11 +528,45 @@
   Removes an entry from a map based on a specific string key.
 
   @note This macro expects a pointer to the dynamic map.
+
+  @see dynmaps_remove_strkey_result(dynamic_map, key, result)
+*/
+#define dynmaps_remove_strkeyval_result(dynamic_map, key, result) \
+	do { \
+		(result) = -1; \
+		int dynmaps_entry_idx = -1; \
+		dynmaps_find_entry_strkey(dynamic_map, key, dynmaps_entry_idx); \
+		if(dynmaps_entry_idx != -1) \
+		{ \
+			dynmaps_remove_at_strkeyval(dynamic_map, dynmaps_entry_idx); \
+			(result) = 1; \
+		} \
+	} while(0)
+
+/**
+  Removes an entry from a map based on a specific string key.
+
+  @note This macro expects a pointer to the dynamic map.
+
+  @see dynmaps_remove(dynamic_map, key)
 */
 #define dynmaps_remove_strkey(dynamic_map, key) \
 	do { \
 		int dynmaps_entry_idx = -1; \
 		dynmaps_remove_strkey_result(dynamic_map, key, dynmaps_entry_idx); \
+	} while(0)
+
+/**
+  Removes an entry from a map based on a specific string key.
+
+  @note This macro expects a pointer to the dynamic map.
+
+  @see dynmaps_remove_strkey(dynamic_map, key)
+*/
+#define dynmaps_remove_strkeyval(dynamic_map, key) \
+	do { \
+		int dynmaps_entry_idx = -1; \
+		dynmaps_remove_strkeyval_result(dynamic_map, key, dynmaps_entry_idx); \
 	} while(0)
 
 /**
@@ -510,6 +579,45 @@
 	do { \
 		for(size_t i = 0; i < (dynamic_map)->size; ++i) \
 		{ \
+			(dynamic_map)->keys[i] = 0; \
+			(dynamic_map)->values[i] = 0; \
+		} \
+		(dynamic_map)->size = 0; \
+	} while(0)
+
+/**
+  Clears the given dynamic map. Clearing a map results in its
+  size being 0.
+
+  @note This macro expects a pointer to the dynamic map.
+
+  This macro is used for dynamic maps using string keys.
+*/
+#define dynmaps_clear_strkey(dynamic_map) \
+	do { \
+		for(size_t i = 0; i < (dynamic_map)->size; ++i) \
+		{ \
+			free((dynamic_map)->keys[i]); \
+			(dynamic_map)->keys[i] = 0; \
+			(dynamic_map)->values[i] = 0; \
+		} \
+		(dynamic_map)->size = 0; \
+	} while(0)
+
+/**
+  Clears the given dynamic map. Clearing a map results in its
+  size being 0.
+
+  @note This macro expects a pointer to the dynamic map.
+
+  This macro is used for dynamic maps using string keys and values.
+*/
+#define dynmaps_clear_strkeyval(dynamic_map) \
+	do { \
+		for(size_t i = 0; i < (dynamic_map)->size; ++i) \
+		{ \
+			free((dynamic_map)->keys[i]); \
+			free((dynamic_map)->values[i]); \
 			(dynamic_map)->keys[i] = 0; \
 			(dynamic_map)->values[i] = 0; \
 		} \
