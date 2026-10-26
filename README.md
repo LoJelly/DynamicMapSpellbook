@@ -1,27 +1,13 @@
 # DynamicMapSpellbook
 
-**DynamicMapSpellbook** is a C library that makes dynamic maps much easier to use and manage. Instead of
-raw pointers and manually keeping track of size, and allocating memory, this library does all of that for you,
-and you can focus on the more important aspects of your program.
+**DynamicMapSpellbook** is a C library that makes dynamic maps much easier to use and manage.
 
-## Clone the repository
+Instead of raw pointers and manually keeping track of size, and allocating memory,
+this library does all of that for you, and you can focus on the more important aspects of your program.
 
-```
-git clone https://github.com/loganjellis/DynamicMapSpellbook.git
-cd DynamicMapSpellbook
-```
+## Features
 
-## Building
-
-```
-cmake -S . -B build
-cmake --build build
-```
-
-### Using the library (in-directory, just place dynamic_map_spellbook.h inside your /include directory)
-
-```
-target_include_directories(app PRIVATE "path/to/include")
-```
+- Generic macros
+- Setting and removing key-value pairs in maps
 
 To view the library's documentation, click <a href="docs/html" target="_blank">here</a>.

@@ -24,12 +24,20 @@
 */
 var NAVTREE =
 [
-  [ "DynamicMapSpellbook", "index.html", ]
+  [ "DynamicMapSpellbook", "index.html", [
+    [ "Files", "files.html", [
+      [ "File List", "files.html", "files_dup" ],
+      [ "File Members", "globals.html", [
+        [ "All", "globals.html", null ],
+        [ "Macros", "globals_defs.html", null ]
+      ] ]
+    ] ]
+  ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"index.html"
+"d8/d52/dynamic__map__spellbook_8h.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
